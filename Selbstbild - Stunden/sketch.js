@@ -56,7 +56,7 @@ for(let y = 0; y < 24; y++){
     pointB: {x: xPosition, y: yPosition},
     stiffness: 0.0001,
     lenght: 100,
-    render: {visible: false, strokeStyle: '#ff0000', type: 'line', lineWidth: 1},
+    render: {visible: true, strokeStyle: '#ff0000', type: 'line', lineWidth: 1},
   });
   fixedConstraints.push(fixedConstraint);
 
