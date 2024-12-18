@@ -128,8 +128,8 @@ for(let y = 0; y < 24; y++){
 
   const limitMaxSpeed = (event) => {
     event.source.world.bodies.forEach((body) => {
-      let maxSpeed = 10
-      Matter.Body.setVelocity(body, {
+      let maxSpeed = 1
+        Matter.Body.setVelocity(body, {
         x: Math.min(maxSpeed, Math.max(-maxSpeed, body.velocity.x)),
         y: Math.min(maxSpeed, Math.max(-maxSpeed, body.velocity.y)),
       })
