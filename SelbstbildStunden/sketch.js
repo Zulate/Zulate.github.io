@@ -36,26 +36,33 @@ function draw(){
     },
   });
 
+  const testCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, 400, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
+  testCircle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+  Matter.Body.rotate(testCircle, Math.PI * 1.5);
+
+  const testPath = Matter.Vertices.fromPath("test", testCircle);
+  console.log(testPath);
 
   // Erstelle 20 kleinere Rechtecke mit weißer Füllung
   const circles = [];
 for(let y = 0; y < 24; y++){
-  let yPosition = window.innerHeight / 4;
-  let xPosition = 60 + window.innerWidth / 12 * y;
+  
+  let yPosition = testPath[0].body.vertices[y].y;
+  let xPosition = testPath[0].body.vertices[y].x;
 
-  if(y >= 12){
-    yPosition += 400;
-    xPosition %= window.innerWidth;
-  }
+/*     if(y >= 12){
+      yPosition += 400;
+      xPosition %= window.innerWidth;
+    }
+ */
 
-  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, 10 + mydata[y][1]/50, { isStatic: false, render: { visible: false, fillStyle: '#ff0000', text: {content: 'Stunde: ' + mydata[y][0] + ' Streams: ' + mydata[y][1], size: 8}}});
+  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, 10 + mydata[y][1]/50, { isStatic: false, render: { visible: true, fillStyle: 'transparent', text: {content: mydata[y][0], size: 16}}});
   controlCircles.push(controlCircle);
 
   const fixedConstraint = Matter.Constraint.create({
     bodyA: controlCircles[y],
     pointB: {x: xPosition, y: yPosition},
     stiffness: 0.0001,
-    lenght: 100,
     render: {visible: true, strokeStyle: '#ff0000', type: 'line', lineWidth: 1},
   });
   fixedConstraints.push(fixedConstraint);
@@ -83,7 +90,7 @@ for(let y = 0; y < 24; y++){
       bodyA: controlCircles[y],
       bodyB: circleConst,
       stiffness: 0.001,
-      lenght: 100,
+      lenght: 2,
       render: {visible: false, strokeStyle: '#ffffff', type: 'line', lineWidth: 1},
     });
     pendulum.push(singlependulum);
@@ -100,7 +107,7 @@ for(let y = 0; y < 24; y++){
   const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
     constraint: {
-      stiffness: 1,
+      stiffness: 0.01,
       render: {
         visible: true, // Verstecke die Mauslinie,
         type: 'line',
@@ -132,7 +139,7 @@ for(let y = 0; y < 24; y++){
   Matter.Events.on(engine, 'beforeUpdate', limitMaxSpeed)
 
   // Hinzufügen der Objekte zur Welt
-  Composite.add(engine.world, [...pendulum, ...circles, mouseConstraint, ...fixedConstraints, ...controlCircles, ...walls]);
+  Composite.add(engine.world, [...pendulum, ...circles, mouseConstraint, ...fixedConstraints, ...controlCircles, testCircle, ...walls]);
 
   // Erstelle einen Runner und starte ihn
   const runner = Runner.create();
