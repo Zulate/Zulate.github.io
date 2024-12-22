@@ -12,7 +12,7 @@ function setup() {
   noCanvas();
 }
 
-function drawData(spotifydata2024){
+function drawData(mydata){
   
 }
 
@@ -41,7 +41,6 @@ function draw(){
   Matter.Body.rotate(testCircle, Math.PI * 1.5);
 
   const testPath = Matter.Vertices.fromPath("test", testCircle);
-  console.log(testPath);
 
   // Erstelle 20 kleinere Rechtecke mit weißer Füllung
   const circles = [];
