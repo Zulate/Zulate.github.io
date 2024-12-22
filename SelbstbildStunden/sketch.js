@@ -5,16 +5,14 @@ let mydata = {};
 let pendulum = [];
 let controlCircles = [];
 let fixedConstraints = [];
-
+let bigCircleSize;
 
 function setup() {
-  mydata = loadJSON("nachStundenSortiert.json", drawData);
+  mydata = loadJSON("nachStundenSortiert.json", mydata);
   noCanvas();
 }
 
-function drawData(mydata){
-  
-}
+function drawData(mydata){}
 
 function draw(){
 
@@ -36,7 +34,23 @@ function draw(){
     },
   });
 
-  const testCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, 400, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
+  // Erstelle einen MouseConstraint für die Mausinteraktion
+  const mouse = Mouse.create(render.canvas);
+  const mouseConstraint = MouseConstraint.create(engine, {
+    mouse: mouse,
+    constraint: {
+      stiffness: 0.01,
+      render: {
+        visible: true, // Verstecke die Mauslinie,
+        type: 'line',
+        strokeStyle: 'red',
+      }
+    }
+  });
+
+if(window.innerHeight > window.innerWidth){bigCircleSize = window.innerWidth / 2.5;} else if(window.innerWidth > window.innerHeight){bigCircleSize = window.innerHeight / 2.5;};
+console.log(bigCircleSize);
+  const testCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, bigCircleSize, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
   testCircle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
   Matter.Body.rotate(testCircle, Math.PI * 1.5);
 
@@ -55,7 +69,7 @@ for(let y = 0; y < 24; y++){
     }
  */
 
-  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, 10 + mydata[y][1]/50, { isStatic: false, render: { visible: true, fillStyle: 'transparent', text: {content: mydata[y][0], size: 16}}});
+  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, bigCircleSize / 20 + mydata[y][1]/100, { density: 10000000, isStatic: false, render: { visible: false, text: {content: mydata[y][0], size: 16}}});
   controlCircles.push(controlCircle);
 
   const fixedConstraint = Matter.Constraint.create({
@@ -75,8 +89,8 @@ for(let y = 0; y < 24; y++){
     const circleConst = Matter.Bodies.circle(
       random(xPosition - 25, xPosition + 25),  // Zufällige X-Position
       random(yPosition - 25, yPosition + 25), // Zufällige Y-Position
-      2,  // Breite des Rechtecks
-      { density: 0.0001, isStatic: false, render: { fillStyle: '#ffffff',
+      bigCircleSize / 150,  // Breite des Rechtecks
+      { density: 0.00000001, isStatic: false, render: { fillStyle: '#ffffff',
                                   // text: {content: mydata[i][0] + ' ' + mydata[i][1],
                                   //         color: "#000000",
                                   //         size: circleSizeMap / 5}
@@ -88,41 +102,22 @@ for(let y = 0; y < 24; y++){
     let singlependulum = Matter.Constraint.create({
       bodyA: controlCircles[y],
       bodyB: circleConst,
-      stiffness: 0.001,
-      lenght: 2,
-      render: {visible: false, strokeStyle: '#ffffff', type: 'line', lineWidth: 1},
+      stiffness: 0.0001,
+      lenght: 10,
+      render: {visible: false, strokeStyle: '#00ff00', type: 'line', lineWidth: 0.2},
     });
     pendulum.push(singlependulum);
   }
 };
 
-
-  
-
-
-
-  // Erstelle einen MouseConstraint für die Mausinteraktion
-  const mouse = Mouse.create(render.canvas);
-  const mouseConstraint = MouseConstraint.create(engine, {
-    mouse: mouse,
-    constraint: {
-      stiffness: 0.01,
-      render: {
-        visible: true, // Verstecke die Mauslinie,
-        type: 'line',
-        strokeStyle: 'red',
-      }
-    }
-  });
-
   // Begrenze die Welt, damit die Rechtecke nicht den Render-Bereich verlassen
   // Erstelle die Kanten (Wände) der Welt
-  const wallThickness = 50;
+  const wallThickness = 200;
   const walls = [
-    Matter.Bodies.rectangle(render.options.width / 2, 0 - wallThickness / 2, render.options.width, wallThickness, { isStatic: true }),  // Oben
-    Matter.Bodies.rectangle(render.options.width / 2, render.options.height + wallThickness / 2, render.options.width, wallThickness, { isStatic: true }),  // Unten
-    Matter.Bodies.rectangle(0 - wallThickness / 2, render.options.height / 2, wallThickness, render.options.height, { isStatic: true }),  // Links
-    Matter.Bodies.rectangle(render.options.width + wallThickness / 2, render.options.height / 2, wallThickness, render.options.height, { isStatic: true })  // Rechts
+    Matter.Bodies.rectangle(render.options.width / 2, 0 - wallThickness / 2, render.options.width * 2, wallThickness, { isStatic: true }),  // Oben
+    Matter.Bodies.rectangle(render.options.width / 2, render.options.height + wallThickness / 2, render.options.width * 2, wallThickness, { isStatic: true }),  // Unten
+    Matter.Bodies.rectangle(0 - wallThickness / 2, render.options.height / 2, wallThickness, render.options.height * 2, { isStatic: true }),  // Links
+    Matter.Bodies.rectangle(render.options.width + wallThickness / 2, render.options.height / 2, wallThickness, render.options.height * 2, { isStatic: true })  // Rechts
   ];
 
   const limitMaxSpeed = (event) => {
@@ -135,17 +130,19 @@ for(let y = 0; y < 24; y++){
     })
   }
 
-  Matter.Events.on(engine, 'beforeUpdate', limitMaxSpeed)
+  Matter.Events.on(engine, 'beforeUpdate', limitMaxSpeed);
 
   // Hinzufügen der Objekte zur Welt
   Composite.add(engine.world, [...pendulum, ...circles, mouseConstraint, ...fixedConstraints, ...controlCircles, testCircle, ...walls]);
 
+
   // Erstelle einen Runner und starte ihn
   const runner = Runner.create();
-  Runner.run(runner, engine);
+  Matter.Runner.run(runner, engine);
 
   // Starte das Rendering
   Render.run(render);
 
 noLoop();
+
 }
