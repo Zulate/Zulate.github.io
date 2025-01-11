@@ -4,8 +4,17 @@
 let mydata = {};
 let pendulum = [];
 let controlCircles = [];
+let smallRectangles = [];
+let textRectangles = [];
 let fixedConstraints = [];
+let numberArray = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
 let bigCircleSize;
+let mousePositionX;
+let mousePositionY;
+let textString = "Zu welcher Uhrzeit";
+let textString2 = "habe ich am Meisten";
+let textString3 = "gestreamt im Jahr 2024?";
+
 
 function setup() {
   mydata = loadJSON("nachStundenSortiert.json", mydata);
@@ -48,13 +57,56 @@ function draw(){
     }
   });
 
+  const explanationRect = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight / 2 -30, 300, 200, {isStatic: true, render: {visible: true, fillStyle: 'rgba(0, 0, 0, 0)', text: {content: textString, size: 24, family: 'Rubik'}}});
+  const explanationRect2 = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight / 2, 300, 200, {isStatic: true, render: {visible: true, fillStyle: 'rgba(0, 0, 0, 0)', text: {content: textString2, size: 24, family: 'Rubik'}}});
+  const explanationRect3 = Matter.Bodies.rectangle(window.innerWidth / 2, window.innerHeight / 2 + 30, 300, 200, {isStatic: true, render: {visible: true, fillStyle: 'rgba(0, 0, 0, 0)', text: {content: textString3, size: 24, family: 'Rubik'}}});
+
+  explanationRect.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+  explanationRect2.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+  explanationRect3.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+
 if(window.innerHeight > window.innerWidth){bigCircleSize = window.innerWidth / 2.5;} else if(window.innerWidth > window.innerHeight){bigCircleSize = window.innerHeight / 2.5;};
 console.log(bigCircleSize);
   const testCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, bigCircleSize, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
-  testCircle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
   Matter.Body.rotate(testCircle, Math.PI * 1.5);
 
   const testPath = Matter.Vertices.fromPath("test", testCircle);
+
+  const rectCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, bigCircleSize / 1.33, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
+  Matter.Body.rotate(rectCircle, Math.PI * 1.5);
+  const rectPath = Matter.Vertices.fromPath("test2", rectCircle);
+
+  const textCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, bigCircleSize / 1.7, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
+  Matter.Body.rotate(textCircle, Math.PI * 1.5);
+  const textPath = Matter.Vertices.fromPath("test3", textCircle);
+
+for(let y = 0; y < 24; y++){
+
+  let yPosition = textPath[0].body.vertices[y].y;
+  let xPosition = textPath[0].body.vertices[y].x;
+
+  const textRectangle = Matter.Bodies.rectangle(xPosition, yPosition, bigCircleSize / 30, bigCircleSize / 30, {isStatic: true, render: {visible: true, fillStyle: 'rgba(0, 0, 0, 0)', text: {content: numberArray[y], size: 20, family: 'Rubik'}}});
+
+  textRectangles.push(textRectangle);
+  textRectangle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+
+}
+
+
+
+for(let y = 0; y < 24; y++){
+
+  let yPosition = rectPath[0].body.vertices[y].y;
+  let xPosition = rectPath[0].body.vertices[y].x;
+
+  const smallRectangle = Matter.Bodies.rectangle(xPosition, yPosition, bigCircleSize / 7, bigCircleSize / 2 / 80, {isStatic: true, render: {visible: true, fillStyle: '#ffffff'}}, [24]);
+  Matter.Body.rotate(smallRectangle, 1.65 + Math.PI * y  / 12);
+  smallRectangles.push(smallRectangle);
+  smallRectangle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+}
+
+testCircle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+rectCircle.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
 
   // Erstelle 20 kleinere Rechtecke mit weißer Füllung
   const circles = [];
@@ -63,13 +115,7 @@ for(let y = 0; y < 24; y++){
   let yPosition = testPath[0].body.vertices[y].y;
   let xPosition = testPath[0].body.vertices[y].x;
 
-/*     if(y >= 12){
-      yPosition += 400;
-      xPosition %= window.innerWidth;
-    }
- */
-
-  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, bigCircleSize / 20 + mydata[y][1]/100, { density: 10000000, isStatic: false, render: { visible: false, text: {content: mydata[y][0], size: 16}}});
+  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, bigCircleSize / 15 + mydata[y][1]/100, { density: 10000000, isStatic: false, render: { visible: false, text: {content: mydata[y][0], size: 16}}});
   controlCircles.push(controlCircle);
 
   const fixedConstraint = Matter.Constraint.create({
@@ -80,7 +126,7 @@ for(let y = 0; y < 24; y++){
   });
   fixedConstraints.push(fixedConstraint);
 
-  for (let i = 0; i < mydata[y][1]/10; i++) {
+  for (let i = 0; i < mydata[y][1]/15; i++) {
     let forThisControlCircle = [];
     // colorMap = map(mydata[i][1], 102, 500, 50, 240);
     // circleSizeMap = map(mydata[i][1], 29, 1602, 25, 100);
@@ -102,9 +148,9 @@ for(let y = 0; y < 24; y++){
     let singlependulum = Matter.Constraint.create({
       bodyA: controlCircles[y],
       bodyB: circleConst,
-      stiffness: 0.0001,
+      stiffness: 0.0005,
       lenght: 10,
-      render: {visible: false, strokeStyle: '#00ff00', type: 'line', lineWidth: 0.2},
+      render: {visible: false, strokeStyle: '#ffffff', type: 'line', lineWidth: 1},
     });
     pendulum.push(singlependulum);
   }
@@ -112,7 +158,7 @@ for(let y = 0; y < 24; y++){
 
   // Begrenze die Welt, damit die Rechtecke nicht den Render-Bereich verlassen
   // Erstelle die Kanten (Wände) der Welt
-  const wallThickness = 200;
+  const wallThickness = 400;
   const walls = [
     Matter.Bodies.rectangle(render.options.width / 2, 0 - wallThickness / 2, render.options.width * 2, wallThickness, { isStatic: true }),  // Oben
     Matter.Bodies.rectangle(render.options.width / 2, render.options.height + wallThickness / 2, render.options.width * 2, wallThickness, { isStatic: true }),  // Unten
@@ -120,20 +166,25 @@ for(let y = 0; y < 24; y++){
     Matter.Bodies.rectangle(render.options.width + wallThickness / 2, render.options.height / 2, wallThickness, render.options.height * 2, { isStatic: true })  // Rechts
   ];
 
+  const mouseOverlay = Matter.Bodies.rectangle(
+    mouse.position.x,
+    mouse.position.y, 
+    50, 
+    50,
+    {isStatic: false, render: {visible: false, fillStyle: '#ff0000'}});
+  mouseOverlay.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
+
   const limitMaxSpeed = (event) => {
-    event.source.world.bodies.forEach((body) => {
-      let maxSpeed = 80
-        Matter.Body.setVelocity(body, {
-        x: Math.min(maxSpeed, Math.max(-maxSpeed, body.velocity.x)),
-        y: Math.min(maxSpeed, Math.max(-maxSpeed, body.velocity.y)),
-      })
-    })
-  }
+
+    mouseOverlay.position.x = mouse.position.x;
+    mouseOverlay.position.y = mouse.position.y;
+
+  };
 
   Matter.Events.on(engine, 'beforeUpdate', limitMaxSpeed);
 
   // Hinzufügen der Objekte zur Welt
-  Composite.add(engine.world, [...pendulum, ...circles, mouseConstraint, ...fixedConstraints, ...controlCircles, testCircle, ...walls]);
+  Composite.add(engine.world, [...pendulum, ...circles, mouseOverlay, mouseConstraint, ...fixedConstraints, ...controlCircles, explanationRect, explanationRect2, explanationRect3, testCircle, ...smallRectangles, ...textRectangles, ...walls]);
 
 
   // Erstelle einen Runner und starte ihn

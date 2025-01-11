@@ -1,6 +1,7 @@
 html, body {
   margin: 0;
   padding: 0;
+  font-family: 'Rubik';
 }
 
 canvas {
@@ -8,5 +9,3 @@ canvas {
   transform-origin: center;
   margin-left: 0%;
 }
-
-
