@@ -1,7 +1,13 @@
-@font-face {
-    font-family: CyGrotesk;
-    src: url('fonts/CyGrotesk-GrandDark.otf');
+*{
+    margin: 0;
+    padding: 0;
+    transition: all 1s ease;
+    scrollbar-width: none;
 }
+
+@font-face {font-family: CyGrotesk; src: url('fonts/CyGrotesk-GrandDark.otf');}
+@font-face {font-family: AkzidenzNormal; font-weight: 100; src: url('fonts/Akzidenz-grotesk-roman.ttf');}
+@font-face {font-family: AkzidenzBlack; font-weight: 1000; src: url('fonts/Akzidenz-grotesk-black.ttf');}
 
 body{
     font-family: Arial, Helvetica, sans-serif;
@@ -11,33 +17,83 @@ body{
     background-image: url("img/bongo-cat-drum.gif");
 }
 
-a, p, h1, h2, h3, h4{
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    background-color: #691FFF;
+a, h1, h2, h3, h4{
+    padding: 0.5rem;
     color: #FFE033;
     text-align: center;
     text-decoration: none;
 }
 
+p{
+    font-family: AkzidenzNormal;
+    font-size: 5vh;
+    font-weight: 100;
+    padding-left: 1.5vh;
+}
+
+.griddler-title-left p, .griddler-info p, .griddler-modul p, .griddler-semester p{align-content: center;}
+
+.flyingUwe{
+    translate: -100vw 0;
+    opacity: 0;
+}
+
 h1{
-    font-family: CyGrotesk;
-    font-size: 3vw;
+    font-family: AkzidenzBlack;
+    font-size: 4vw;
+    font-weight: 1000;
+}
+
+h2{
+    font-family: AkzidenzNormal;
+    font-size: 2vw;
+    font-weight: 1000;
 }
 
 a:hover{
-    color: white;
+    color: #FFE033;
     text-decoration: underline;
-    
 }
 
-.game-container{
-    position: absolute;
-    left: 50%;
-    translate: -50% 0;
-    background-color: black;
-    padding: 50px;
+.griddler{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 10vh 0 0 0;
 }
 
-iframe{
+.griddler div{
+    display: flex;
+    justify-content: start;
+}
+
+.griddler-title-left, .griddler-semester, .griddler-content, .griddler-modul, .griddler-info{box-shadow: inset -2px -2px 0 0 black; background-color: white;}
+
+.griddler-modul{
+    grid-column: 1 / span 5;
+    grid-row: 3;
+}
+
+.griddler-info{
+    grid-column: 1 / span 5;
+    grid-row: 4;
+}
+
+.griddler-title-left{
+    grid-column: 1 / span 4;
+    grid-row: 1;
+}
+
+#first-project{
+    background-color: blue;
+}
+
+.griddler-semester{
+    align-items: center;
+    grid-column: 5 / span 1;
+    grid-row: 1;
+}
+
+.griddler-content{
+    grid-column: 1 / span 5;
+    grid-row: 2 / span 2;
 }
