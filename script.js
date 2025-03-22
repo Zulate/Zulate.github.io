@@ -30,7 +30,7 @@ function changeProject(){
             elements.forEach(p => {p.style.translate = '-100vw 0';p.style.opacity = '0';});
             projects.state[i][1] = 0;
         }
-        document.getElementById('griddler-project' + projects.id).style.gridTemplateRows = '10vh 70vh 10vh 10vh';
+        document.getElementById('griddler-project' + projects.id).style.gridTemplateRows = '10vh 65vh 10vh 15vh';
         let elements = document.querySelectorAll('#griddler-project' + projects.id + ' .flyingUwe');
         elements.forEach(p => {p.style.translate = '0 0';p.style.opacity = '1';});
         projects.state[projects.id-1][1] = 1;
