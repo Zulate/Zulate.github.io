@@ -16,8 +16,11 @@ body{
     font-size: 2rem;
 }
 
-a, h1, h2, h3, h4{
-    padding: 0.5rem;
+a{
+    padding: 1.5vh;
+    font-size: 3vw;
+    font-weight: 1000;
+    font-family: AkzidenzBlack;
     color: #FFE033;
     text-align: center;
     text-decoration: none;
@@ -26,13 +29,11 @@ a, h1, h2, h3, h4{
 
 p{
     font-family: AkzidenzNormal;
-    font-size: 5vh;
+    font-size: 3vw;
     font-weight: 100;
-    padding-left: 1.5vh;
-    padding-right: 1.5vh;
+    padding: 1.5vh;
+    width: max-content;
 }
-
-.griddler-title-left p, .griddler-info p, .griddler-modul p, .griddler-semester p{align-content: center;}
 
 .flyingUwe{
     translate: -100vw 0;
@@ -62,11 +63,13 @@ a:hover{
     grid-template-rows: 10vh 0 0 0;
 }
 
-.griddler div{
+.griddler .griddler-title-left, .griddler .griddler-semester, .griddler .griddler-content, .griddler .griddler-modul, .griddler .griddler-info{
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
 }
+
+.griddler .griddler-title-left, .griddler .griddler-semester, .griddler .griddler-modul, .griddler .griddler-info{align-items: center;}
 
 .griddler-title-left, .griddler-semester, .griddler-content, .griddler-modul, .griddler-info{box-shadow: inset -2px 2px 0 0 black; background-color: white;}
 
@@ -93,6 +96,16 @@ a:hover{
 }
 
 .griddler-content{
+    display: flex;
     grid-column: 1 / span 5;
     grid-row: 2;
+    overflow: scroll;
 }
+
+.griddler-content p, .griddler-content a{
+    font-size: 2vw;
+}
+
+.content-33{width: 33%; display: flex; flex-wrap: wrap;}
+.content-66{width: 66%; display: flex; flex-wrap: wrap;}
+.content-100{width: 100%; display: flex; flex-wrap: wrap;}
