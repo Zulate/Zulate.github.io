@@ -12,8 +12,8 @@ let bigCircleSize;
 let mousePositionX;
 let mousePositionY;
 let textString = "Zu welcher Uhrzeit";
-let textString2 = "habe ich am Meisten";
-let textString3 = "gestreamt im Jahr 2024?";
+let textString2 = "habe ich am meisten";
+let textString3 = "gestreamt auf Spotify?";
 
 
 function setup() {
@@ -66,7 +66,7 @@ function draw(){
   explanationRect3.collisionFilter = {'group': -1,'category': 2,'mask': 0,};
 
 if(window.innerHeight > window.innerWidth){bigCircleSize = window.innerWidth / 2.5;} else if(window.innerWidth > window.innerHeight){bigCircleSize = window.innerHeight / 2.5;};
-console.log(bigCircleSize);
+
   const testCircle = Matter.Bodies.circle(window.innerWidth / 2, window.innerHeight / 2, bigCircleSize, {isStatic: true, render: {visible: false, fillStyle: '#ff0000'}}, [24]);
   Matter.Body.rotate(testCircle, Math.PI * 1.5);
 
@@ -115,7 +115,7 @@ for(let y = 0; y < 24; y++){
   let yPosition = testPath[0].body.vertices[y].y;
   let xPosition = testPath[0].body.vertices[y].x;
 
-  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, bigCircleSize / 15 + mydata[y][1]/100, { density: 10000000, isStatic: false, render: { visible: false, text: {content: mydata[y][0], size: 16}}});
+  const controlCircle = Matter.Bodies.circle(xPosition, yPosition, bigCircleSize / 20 + mydata[y][1]/75, { density: 10000000, isStatic: false, render: { visible: false, text: {content: mydata[y][0], size: 16}}});
   controlCircles.push(controlCircle);
 
   const fixedConstraint = Matter.Constraint.create({
