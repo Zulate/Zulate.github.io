@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     transition: all 1s ease;
-    scrollbar-width: none;
 }
 
 @font-face {font-family: CyGrotesk; src: url('fonts/CyGrotesk-GrandDark.otf');}
@@ -14,24 +13,28 @@ body{
     background-color: #14151f;
     /* other color: #691FFF */
     font-size: 2rem;
+    min-height: 150vh;
+}
+
+html, body{
+    height: 100%;
 }
 
 a{
-    padding: 1.5vh;
-    font-size: 3vw;
+    padding: 1.5vh 1.5vh 0vh 1.5vh;
+    font-size: 2vw;
     font-weight: 1000;
     font-family: AkzidenzBlack;
     color: #FFE033;
     text-align: center;
     text-decoration: none;
-    height:max-content;
 }
 
 p{
     font-family: AkzidenzNormal;
-    font-size: 3vw;
+    font-size: 2vw;
     font-weight: 100;
-    padding: 1.5vh;
+    padding: 1.5vh 1.5vh 0vh 1.5vh;
     width: max-content;
 }
 
@@ -41,15 +44,23 @@ p{
 }
 
 h1{
-    font-family: AkzidenzBlack;
-    font-size: 4vw;
-    font-weight: 1000;
+    font-family: AkzidenzNormal;
+    font-size: 3vw;
+    font-weight: 100;
+    padding: 1.5vh;
+    width: max-content;
 }
 
 h2{
     font-family: AkzidenzNormal;
     font-size: 2vw;
     font-weight: 1000;
+}
+
+.content-100 img{
+    object-fit: contain;
+    width: 31%;
+    padding: 0 1.5vh 0 1.5vh;
 }
 
 a:hover{
@@ -69,6 +80,10 @@ a:hover{
     justify-content: start;
 }
 
+.griddler-title-left h1{
+    padding: 2.5vh;
+}
+
 .griddler .griddler-title-left, .griddler .griddler-semester, .griddler .griddler-modul, .griddler .griddler-info{align-items: center;}
 
 .griddler-title-left, .griddler-semester, .griddler-content, .griddler-modul, .griddler-info{box-shadow: inset -2px 2px 0 0 black; background-color: white;}
@@ -76,6 +91,7 @@ a:hover{
 .griddler-modul{
     grid-column: 1 / span 5;
     grid-row: 3;
+    align-content: center;
 }
 
 .griddler-info{
@@ -86,6 +102,7 @@ a:hover{
 .griddler-title-left{
     grid-column: 1 / span 4;
     grid-row: 1;
+    cursor: pointer;
 }
 
 .griddler .griddler-semester{
@@ -100,12 +117,38 @@ a:hover{
     grid-column: 1 / span 5;
     grid-row: 2;
     overflow: scroll;
+    scrollbar-width: auto;
+    scrollbar-color: black rgba(0, 0, 0, 0);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
-.griddler-content p, .griddler-content a{
-    font-size: 2vw;
+.griddler-content p{
+    text-align: justify;
 }
 
-.content-33{width: 33%; display: flex; flex-wrap: wrap;}
-.content-66{width: 66%; display: flex; flex-wrap: wrap;}
-.content-100{width: 100%; display: flex; flex-wrap: wrap;}
+.content-33{width: 33vw;}
+.content-66{width: 66vw;}
+.content-50{width: 49vw;}
+.content-100{width: 100vw;}
+
+.content-33, .content-66, .content-50, .content-100{display: flex; flex-wrap: wrap;}
+
+.content-100 p, .content-100 a{
+    align-content: center;
+}
+
+.content-50{
+    max-height: max-content;
+}
+
+.content-right{justify-content: end;}
+.content-left{justify-content: start;}
+.content-center{justify-content: center;}
+
+.figmaIframe{
+    width: 100%;
+    height: 95%;
+    padding: 1.5vh 0 1.5vh 0;
+    border: none;
+}
