@@ -59,8 +59,22 @@ h2{
 
 .content-100 img{
     object-fit: contain;
-    width: 31%;
+    max-width: 100%;
     padding: 0 1.5vh 0 1.5vh;
+}
+
+.content-50 img{
+    object-fit: contain;
+    max-width: 100%;
+    padding: 0 1.5vh 0 1.5vh;
+}
+
+.oneOfThree{
+    max-width: 31%;
+}
+
+.imageSize50{
+    max-width: 50%;
 }
 
 a:hover{

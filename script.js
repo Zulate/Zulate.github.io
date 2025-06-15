@@ -9,13 +9,15 @@ projects.state = [
     [0, 0],
     [1, 0],
     [2, 0],
-    [3, 0]
+    [3, 0],
+    [4, 0]
 ];
 
 projects[0].addEventListener("click", (change) => {projects.id = 1; changeProject(); });
 projects[1].addEventListener("click", (change) => {projects.id = 2; changeProject(); });
 projects[2].addEventListener("click", (change) => {projects.id = 3; changeProject(); });
 projects[3].addEventListener("click", (change) => {projects.id = 4; changeProject(); });
+projects[4].addEventListener("click", (change) => {projects.id = 5; changeProject(); });
 
 function changeProject(){
 
